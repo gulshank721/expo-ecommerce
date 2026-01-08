@@ -4,11 +4,16 @@ import { ENV } from './config/env.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { connectDB } from './config/db.js';
+
+import { clerkMiddleware } from '@clerk/express';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+
+app.use(clerkMiddleware()); // adds auth object under the request
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Hello World' });
@@ -25,4 +30,5 @@ if (ENV.NODE_ENV === 'production') {
 
 app.listen(ENV.PORT, () => {
   console.log(`Server is running on port ${ENV.PORT}`);
+  connectDB();
 });
