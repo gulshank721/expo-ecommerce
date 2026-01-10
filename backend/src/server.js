@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import { connectDB } from './config/db.js';
 
 import { clerkMiddleware } from '@clerk/express';
+import cors from 'cors';
 
 import { serve } from 'inngest/express';
 import { inngest, functions } from './config/inngest.js';
@@ -40,6 +41,29 @@ app.use(
 app.use(express.json());
 app.use(clerkMiddleware()); // adds auth object under the request
 // Set up the "/api/inngest" (recommended) routes with the serve handler
+
+const allowedOrigins = [
+  'https://client1.com',
+  'https://client2.com',
+  'http://localhost:3000',
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// Inngest
 app.use('/api/inngest', serve({ client: inngest, functions }));
 
 app.get('/api/health', (req, res) => {
