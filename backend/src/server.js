@@ -43,9 +43,9 @@ app.use(clerkMiddleware()); // adds auth object under the request
 // Set up the "/api/inngest" (recommended) routes with the serve handler
 
 const allowedOrigins = [
-  'https://client1.com',
-  'https://client2.com',
   'http://localhost:3000',
+  'http://localhost:5173/health',
+  ENV.CLIENT_URL,
 ];
 
 app.use(
