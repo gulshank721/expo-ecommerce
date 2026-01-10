@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping Render server
         run: |
-          curl -s https://expo-ecommerce-35t7.onrender.com/health > /dev/null
+          curl -s https://expo-ecommerce-35t7.onrender.com/api/health > /dev/null

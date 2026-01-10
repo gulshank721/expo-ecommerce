@@ -19,10 +19,9 @@ import productRoutes from './routes/product.route.js';
 import paymentRoutes from './routes/payment.route.js';
 
 const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
+const __dirname = dirname(__filename);
 
 const app = express();
-const __dirname = path.resolve();
 
 // special handling: Stripe webhook needs raw body BEFORE any body parsing middleware
 // apply raw body parser conditionally only to webhook endpoint
@@ -43,7 +42,7 @@ app.use(clerkMiddleware()); // adds auth object under the request
 // Set up the "/api/inngest" (recommended) routes with the serve handler
 app.use('/api/inngest', serve({ client: inngest, functions }));
 
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Hello World' });
 });
 
