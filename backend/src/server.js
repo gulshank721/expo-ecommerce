@@ -10,6 +10,10 @@ import { clerkMiddleware } from '@clerk/express';
 import { serve } from 'inngest/express';
 import { inngest, functions } from './config/inngest.js';
 
+import adminRoutes from './routes/admin.route.js';
+import cartRoutes from './routes/cart.route.js';
+import userRoutes from './routes/user.route.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -22,6 +26,10 @@ app.use('/api/inngest', serve({ client: inngest, functions }));
 app.get('/api/health', (req, res) => {
   res.status(200).json({ message: 'Hello World' });
 });
+
+app.use('/api/admin', adminRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/user', userRoutes);
 
 // make app ready for development
 if (ENV.NODE_ENV === 'production') {
