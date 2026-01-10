@@ -43,7 +43,7 @@ app.use(clerkMiddleware()); // adds auth object under the request
 // Set up the "/api/inngest" (recommended) routes with the serve handler
 app.use('/api/inngest', serve({ client: inngest, functions }));
 
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({ message: 'Hello World' });
 });
 
