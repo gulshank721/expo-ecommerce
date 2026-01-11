@@ -4,11 +4,14 @@ import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { OrdersPage } from './pages/OrdersPage';
-import { CustomersPage } from './pages/CustomersPage';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import { PageLoader } from './components/PageLoader';
+import { CustomersPage } from './pages/CustomersPage';
 
 const App = () => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+  if (!isLoaded) return <PageLoader />;
+
   return (
     <Routes>
       <Route

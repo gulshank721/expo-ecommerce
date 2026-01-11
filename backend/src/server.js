@@ -44,7 +44,7 @@ app.use(clerkMiddleware()); // adds auth object under the request
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:5173/health',
+  'http://localhost:5173',
   ENV.CLIENT_URL,
 ];
 
