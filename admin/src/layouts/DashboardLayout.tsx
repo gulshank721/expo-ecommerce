@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import { Navbar } from '../components/Navbar';
 import { Sidebar } from '../components/Sidebar';
+import { ToastContainer } from 'react-toastify';
 
 // interface DashboardLayoutProps {
 // }
@@ -24,6 +25,7 @@ export const DashboardLayout: React.FC = () => {
       </div>
 
       <Sidebar />
+      <ToastContainer />
     </div>
   );
 };

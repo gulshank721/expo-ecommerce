@@ -77,6 +77,24 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/reviews', reviewRoutes);
 
+// Generalized error handler (add after all routes)
+app.use((err, req, res, next) => {
+  // Multer errors
+  if (err.name === 'MulterError') {
+    return res.status(400).json({ success: false, message: err.message });
+  }
+  // Custom or validation errors
+  if (err.statusCode) {
+    return res
+      .status(err.statusCode)
+      .json({ success: false, message: err.message });
+  }
+  // Default: Internal Server Error
+  res
+    .status(500)
+    .json({ success: false, message: err.message || 'Internal Server Error' });
+});
+
 // make app ready for development
 if (ENV.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../admin/dist')));

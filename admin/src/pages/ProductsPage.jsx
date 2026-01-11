@@ -9,6 +9,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { productApi } from '../lib/api';
 import { getStockStatusBadge } from '../lib/utils';
+import { toast } from 'react-toastify';
 
 export const ProductsPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -117,12 +118,37 @@ export const ProductsPage = () => {
       images.forEach((image) => formDataToSend.append('images', image));
 
     if (editingProduct) {
-      updateProductMutation.mutate({
-        id: editingProduct._id,
-        formData: formDataToSend,
-      });
+      toast.promise(
+        updateProductMutation.mutateAsync({
+          id: editingProduct._id,
+          formData: formDataToSend,
+        }),
+        {
+          pending: 'Updating product...',
+          success: 'Product updated!',
+          error: {
+            render({ data }) {
+              // data is the error thrown
+              return (
+                data?.response?.data?.message || 'Failed to update product'
+              );
+            },
+          },
+        }
+      );
     } else {
-      createProductMutation.mutate(formDataToSend);
+      // createProductMutation.mutate(formDataToSend);
+      console.log('Creating product...');
+
+      toast.promise(createProductMutation.mutateAsync(formDataToSend), {
+        pending: 'Creating product...',
+        success: 'Product created!',
+        error: {
+          render({ data }) {
+            return data?.response?.data?.message || 'Failed to create product';
+          },
+        },
+      });
     }
   };
 
@@ -156,7 +182,14 @@ export const ProductsPage = () => {
                 <div className="flex items-center gap-6">
                   <div className="avatar">
                     <div className="w-20 rounded-xl">
-                      <img src={product.images[0]} alt={product.name} />
+                      <img
+                        src={
+                          product?.images?.length > 0
+                            ? product?.images[0]
+                            : null
+                        }
+                        alt={product.name}
+                      />
                     </div>
                   </div>
 
