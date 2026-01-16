@@ -148,7 +148,7 @@ const products = [
 const seedDatabase = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect(ENV.DB_URL);
+    await mongoose.connect(ENV.MONGO_URI);
     console.log('✅ Connected to MongoDB');
 
     // Clear existing products
